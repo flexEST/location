@@ -1,10 +1,10 @@
 from http.server import BaseHTTPRequestHandler
 from twilio.rest import Client
 import json
+import os
 
 class handler(BaseHTTPRequestHandler):
     def do_POST(self):
-        # Set CORS headers first so the browser allows the response
         self.send_response(200)
         self.send_header('Content-type', 'application/json')
         self.send_header('Access-Control-Allow-Origin', 'https://app.telebeplus.com')
@@ -13,9 +13,9 @@ class handler(BaseHTTPRequestHandler):
         self.end_headers()
 
         try:
-            # Your exact working credentials and logic
-            account_sid = "AC0eb95f311e1764627245d71f653de943"
-            auth_token = "923525e309031c27c4e184927e23f7fa"
+            # Read safely from Vercel environment variables
+            account_sid = os.environ.get("TWILIO_ACCOUNT_SID")
+            auth_token = os.environ.get("TWILIO_AUTH_TOKEN")
 
             client = Client(account_sid, auth_token)
 
