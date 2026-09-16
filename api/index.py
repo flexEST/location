@@ -12,14 +12,17 @@ class handler(BaseHTTPRequestHandler):
         self.send_header('Access-Control-Allow-Headers', 'Content-Type')
         self.end_headers()
 
-        try:
-            # Read safely from Vercel environment variables
-            account_sid = os.environ.get("TWILIO_ACCOUNT_SID")
-            auth_token = os.environ.get("TWILIO_AUTH_TOKEN")
+        # Print debug info to Vercel function logs
+        account_sid = os.environ.get("TWILIO_ACCOUNT_SID")
+        auth_token = os.environ.get("TWILIO_AUTH_TOKEN")
+        
+        print(f"DEBUG SID length: {len(str(account_sid)) if account_sid else 'MISSING'}")
+        print(f"DEBUG TOKEN length: {len(str(auth_token)) if auth_token else 'MISSING'}")
 
+        try:
             client = Client(account_sid, auth_token)
 
-            say_message = "Salam! Sizin server tapşırığınız uğurla başa çatdı. Gecəniz xeyrə qalsın."
+            say_message = "Salam! Sizin server tapşırığınız uğurla başa çatdı. Gecəniz xeyrə qalmasın."
             twiml_response = f'<Response><Say language="az-AZ">{say_message}</Say></Response>'
 
             call = client.calls.create(
